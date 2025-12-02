@@ -160,8 +160,23 @@ async def handle_private(client: Client, acc, message: Message, chatid: int, msg
     smsg = await client.send_message(message.chat.id, 'Downloading', reply_to_message_id=message.id)
     dosta = asyncio.create_task(downstatus(client, f'{message.id}downstatus.txt', smsg))
     try:
+    file = await acc.download_media(msg, progress=progress, progress_args=[message,"down"])
+    os.remove(f'{message.id}downstatus.txt')
+
+except FloodWait as e:
+    print(f"[FloodWait] Waiting 5 seconds instead of {e.value}")
+    await asyncio.sleep(5)
+    # retry once
+    try:
         file = await acc.download_media(msg, progress=progress, progress_args=[message,"down"])
         os.remove(f'{message.id}downstatus.txt')
+    except Exception as e2:
+        await client.send_message(message.chat.id, f"Error after retry: {e2}", reply_to_message_id=message.id)
+        return
+
+except Exception as e:
+    await client.send_message(message.chat.id, f"Error: {e}", reply_to_message_id=message.id)
+    return
         
     except Exception as e:
         await client.send_message(message.chat.id, f"Error: {e}", reply_to_message_id=message.id)  
