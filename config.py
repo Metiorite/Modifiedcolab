@@ -9,5 +9,6 @@ API_ID = int(os.environ.get("API_ID", "22451323"))
 #Your API Hash from my.telegram.org
 API_HASH = os.environ.get("API_HASH", "4783925ba83751dfadedcc961bf1275")
 
+WAITING_TIME = int(os.environ.get("WAITING_TIME", "5"))
 #Database 
 DB_URI = os.environ.get("DB_URI", "mongodb+srv://heroku:heroku@cluster0.wamwxpr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
